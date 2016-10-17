@@ -1,0 +1,311 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.bayes.NaiveBayes
+Relation:     twitter-loc-best35
+Instances:    72735
+Attributes:   37
+              id
+              bellevue
+              bill
+              boston
+              ca
+              care
+              chargers
+              cheezburger
+              dc
+              diego
+              ebay
+              health
+              houston
+              httpbitlycdqk
+              httpbitlycjf
+              httpbitlyczmk
+              jupdicom
+              lol
+              ma
+              obama
+              patriots
+              redsox
+              san
+              sandiego
+              scans
+              sd
+              sdut
+              seahawks
+              seattle
+              sox
+              tcot
+              texas
+              tx
+              uw
+              wa
+              washington
+              location
+Test mode:    user supplied test set:  size unknown (reading incrementally)
+
+=== Classifier model (full training set) ===
+
+Naive Bayes Classifier
+
+                  Class
+Attribute             B       H      SD      Se       W
+                  (0.2)   (0.2)   (0.2)   (0.2)   (0.2)
+========================================================
+id
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+bellevue
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+bill
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+boston
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+ca
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+care
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+chargers
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+cheezburger
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+dc
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+diego
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+ebay
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+health
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+houston
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+httpbitlycdqk
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+httpbitlycjf
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+httpbitlyczmk
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+jupdicom
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+lol
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+ma
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+obama
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+patriots
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+redsox
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+san
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+sandiego
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+scans
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+sd
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+sdut
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+seahawks
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+seattle
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+sox
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+tcot
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+texas
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+tx
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+uw
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+wa
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+washington
+  mean                 0       0       0       0       0
+  std. dev.       0.0017  0.0017  0.0017  0.0017  0.0017
+  weight sum           0       0       0       0       0
+  precision         0.01    0.01    0.01    0.01    0.01
+
+
+
+Time taken to build model: 0.05 seconds
+
+=== Evaluation on test set ===
+
+Time taken to test model on supplied test set: 13.43 seconds
+
+=== Summary ===
+
+Correctly Classified Instances       45205               21.0373 %
+Incorrectly Classified Instances    169675               78.9627 %
+Kappa statistic                          0
+K&B Relative Info Score                  0      %
+K&B Information Score                    0      bits      0      bits/instance
+Class complexity | order 0          498935.909  bits      2.3219 bits/instance
+Class complexity | scheme           498935.909  bits      2.3219 bits/instance
+Complexity improvement     (Sf)          0      bits      0      bits/instance
+Mean absolute error                      0.32
+Root mean squared error                  0.4
+Relative absolute error                100      %
+Root relative squared error            100      %
+Total Number of Instances           214880     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 1.000    1.000    0.210      1.000    0.348      0.000    0.501     0.211     B
+                 0.000    0.000    0.000      0.000    0.000      0.000    0.488     0.162     H
+                 0.000    0.000    0.000      0.000    0.000      0.000    0.487     0.252     SD
+                 0.000    0.000    0.000      0.000    0.000      0.000    0.525     0.204     Se
+                 0.000    0.000    0.000      0.000    0.000      0.000    0.501     0.172     W
+Weighted Avg.    0.210    0.210    0.044      0.210    0.073      0.000    0.500     0.205
+
+=== Confusion Matrix ===
+
+     a     b     c     d     e   <-- classified as
+ 45205     0     0     0     0 |     a = B
+ 35521     0     0     0     0 |     b = H
+ 55194     0     0     0     0 |     c = SD
+ 42052     0     0     0     0 |     d = Se
+ 36908     0     0     0     0 |     e = W

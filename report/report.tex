@@ -1,0 +1,92 @@
+\documentclass[a4paper]{article}
+\usepackage[margin=0.75in]{geometry} % margins
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{float} % Image float [H] option
+\usepackage{subfig} % Figures in figures ( I think)
+
+\usepackage[square]{natbib}
+
+\usepackage{hyperref} % \url
+
+% Default Font
+\usepackage[default]{lato}
+\usepackage[T1]{fontenc}
+\renewcommand{\mddefault}{l}% switch default weight to light
+
+% Paragraphs
+\setlength{\parskip}{\baselineskip}	% add space between paragraphs
+\setlength{\parindent}{0pt}			    % No paragraph indent
+\usepackage[none]{hyphenat}         % No Hyphens
+
+% Declare first level dot point as a -
+\def\labelitemi{--}
+
+% Smart quotes
+\usepackage [autostyle, english = american]{csquotes}
+\MakeOuterQuote{"}
+
+\title{Knowledge Technologies - Project 2: Geolocation of tweets with Machine Learning}
+
+% \author{James Stone - 761353}
+
+\date{October 2016}
+
+\begin{document}
+\maketitle
+
+\section{Description}
+The task at hand involves gaining \textit{knowledge} about tweets in particular the locations represented in them through the use of Machine Learning techniques.
+The task of identifying a location name can be broken up into different subtypes, based on the locations granularity \texttt{City, State, Country} etc. \cite{nadeau2007survey} This will look at identifying the following cities: \texttt{Boston (B), Houston (H), San Diego (SD), Seattle (Se), and Washington DC (W) } solely at a city level, as this is what is most commonly used in tweets.
+
+This will look at different classifiers and attempt to determine the \textit{"best"} (most accurately represents the test data without over fitting the training data).
+\section{Feature Engineering}
+
+\section{Classification}
+Weka \cite{Weka} was utilised for all of the classification methods.
+
+
+\subsection{Naive Bayes}
+\subsubsection{Result}
+
+\begin{table}[H]
+\centering
+\caption{Performance}
+\label{my-label}
+  \begin{tabular}{lll}
+    Correctly Classified Instances & 45205 & 21.0373 \% \\
+    Incorrectly Classified Instances & 169675 & 78.9627 \% \\
+  \end{tabular}
+\end{table}
+
+\subsubsection{Analysis}
+% • Does your classifier do a good job at addressing the task? Why or why not?
+Despite my hunch that the Naive Bayes classification would struggle. These results align with previous research has been shown that Naive Bayes classifiers have been shown to work for both independent features and dependent feature's \cite{rish2001empirical}.
+% • Why is the method(s) you explored a reasonable strategy for approaching the task? What advantages? does it have over other possible methods?
+Th
+% • If you engineered new features, why did you use them? What aspect of the data set are they attempting to model?
+The new features
+% • What evaluation strategy did you use? Based on this evaluation, does your model seem to be a good one?
+% • Be sure to support your statements and analysis with examples
+
+\subsection{subsection}
+% • Does your classifier do a good job at addressing the task? Why or why not?
+% • Why is the method(s) you explored a reasonable strategy for approaching the task? What advantages? does it have over other possible methods?
+% • If you engineered new features, why did you use them? What aspect of the data set are they attempting to model?
+% • What evaluation strategy did you use? Based on this evaluation, does your model seem to be a good one?
+% • Be sure to support your statements and analysis with examples
+
+\subsection{subsection}
+% • Does your classifier do a good job at addressing the task? Why or why not?
+% • Why is the method(s) you explored a reasonable strategy for approaching the task? What advantages? does it have over other possible methods?
+% • If you engineered new features, why did you use them? What aspect of the data set are they attempting to model?
+% • What evaluation strategy did you use? Based on this evaluation, does your model seem to be a good one?
+% • Be sure to support your statements and analysis with examples
+
+
+\bibliographystyle{plainnat}
+\bibliography{bibliography.bib}
+\end{document}
