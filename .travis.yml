@@ -1,0 +1,19 @@
+sudo: required
+language: ruby
+services:
+- docker
+before_install:
+- docker pull blang/latex
+script:
+- docker run --rm -i --user="$(id -u):$(id -g)" --net=none -v "$(pwd)/report":/data
+  blang/latex xelatex -interaction=nonstopmode report.tex || true; test -e report/report.pdf
+  && echo "pdf generated";
+deploy:
+  provider: releases
+  file: report/report.pdf
+  skip_cleanup: true
+  on:
+    tags: true
+env:
+  global:
+    secure: eijNxtH3T4Au89te9GuDQhUOmBmpQopFezRYU1AkRVsE6+23YsJMZHxAYwwJbRpf9WMqlVmdjLMAuaHBlFDz+PMFpVi5v5xLG8dbrX+wtB7exjNmJ6XX+z0trVnPT8zwdlQLz1HdHalZO7q23xlxp0D7fSqP1Kfu0WaITLSFxCmbwTvAuE1KHu2DK1sO/Hz5eAyYnM/4PRUPulE7QdQ1WrQRzccOWQAScL+6kLfjEsuWe9RakCfMzIkFT/oEQzMvbWFaCepfL4Rp8XgXhoV6AnZRYDwdei+3l3SoyvHHVKWc0V9w77PHWm8QJTTnynnGPz84oQJZ8mJKM/yfqBsfLPwyL9XxZcXcZd4m2rM+SKeTkslaXDgKkz2V/cCS1j1NyE1fp147wjLA3WeOqcj2w8i5+Clp+u9qm3SEnO5+Lc7zV5d/QCvhoVLZDcL2hzLgeb/2yLbm93PRadCyf7TPBmnnBgq11b4DNoOWLweximzzKEuD3cNMT3Mtbjz4OFW4YXK9hZdl7qEZwkYCRW4W3LlUhbHimBtHQgnfalXCWYWVUahDjcoq4CN9uLGejLXof4Tlf1jgj0zKuX3BYVbrL3687zFJ0uVu4TKKy7IFuqEBdn6ul2zr/0mQVIsjQvj98tr43E5UDbD/S0fYtLt2qXgpZXol54cQ+K7YWWkSIo0=
