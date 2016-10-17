@@ -1,4 +1,5 @@
 \documentclass[a4paper]{article}
+% \documentclass[a4paper,twocolumn]{article}
 \usepackage[margin=0.75in]{geometry} % margins
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
@@ -8,7 +9,19 @@
 \usepackage{float} % Image float [H] option
 \usepackage{subfig} % Figures in figures ( I think)
 
-\usepackage[square]{natbib}
+\usepackage[square,numbers]{natbib} % bibliography
+
+% lscape.sty Produce landscape pages in a (mainly) portrait document.
+\usepackage{lscape}
+
+% wordcount
+\newcommand\wordcount{
+    \immediate\write18{texcount -sub=section \jobname.tex  | grep "Section" | sed -e 's/+.*//' | sed -n \thesection p > 'count.txt'}
+(\input{count.txt}words)}
+
+\newcommand\texcount{
+    \immediate\write18{texcount -sum -1 \jobname.tex  > 'count.txt'}
+(Total words: \input{count.txt})}
 
 \usepackage{hyperref} % \url
 
@@ -39,53 +52,293 @@
 \maketitle
 
 \section{Description}
-The task at hand involves gaining \textit{knowledge} about tweets in particular the locations represented in them through the use of Machine Learning techniques.
-The task of identifying a location name can be broken up into different subtypes, based on the locations granularity \texttt{City, State, Country} etc. \cite{nadeau2007survey} This will look at identifying the following cities: \texttt{Boston (B), Houston (H), San Diego (SD), Seattle (Se), and Washington DC (W) } solely at a city level, as this is what is most commonly used in tweets.
+This task at hand involves gaining \textit{knowledge} about tweets from Twitter, in particular the locations represented in them through the use of Machine Learning techniques.
+The task of identifying a location name can be broken up into different sub types, based on the location's granularity \texttt{City, State, Country} etc. \cite{nadeau2007survey} This will look at identifying the following five cities:  Boston \texttt{(B)}, Houston \texttt{(H)}, San Diego \texttt{(SD)}, Seattle \texttt{(Se)}, and Washington DC \texttt{(W)} solely at a city level, as this is what is most commonly used in tweets.
 
 This will look at different classifiers and attempt to determine the \textit{"best"} (most accurately represents the test data without over fitting the training data).
+% \wordcount
 \section{Feature Engineering}
+For the following classification attempts Mutual Information was used to determine the which features to use. Or more specifically:
+\begin{description}
+  \item [Pre-Processed] the training tweets: remove non-alphabetical characters, and folded case.
+  \item [Mutual Information] to determine the best \texttt{10} terms (words) that were present when representing a each of  the \texttt{5} classes (cities).
+  \item [Post-Processed] removed duplicates, to end up with a set of \texttt{35} unique terms.
+\end{description}
+\textit{Note: This process was supplied.}
+
+However, when generating a tree for C4.5  I did reduce the number of features. (see Section 3.2 for details.)
 
 \section{Classification}
-Weka \cite{Weka} was utilised for all of the classification methods.
+Weka \cite{Weka} was utilised for  generating all of the classifications using the different methods, listed below.
 
 
 \subsection{Naive Bayes}
+% • Does your classifier do a good job at addressing the task? Why or why not?
+Despite my hunch that the Naive Bayes classification would struggle. These results align with previous research has been shown that Naive Bayes classifiers have been shown to work for both independent features and dependent feature's \cite{rish2001empirical}.
+% • Why is the method(s) you explored a reasonable strategy for approaching the task? What advantages? does it have over other possible methods?
+This method works reasonably well compared to other categorisation approaches. It however has a tendency to over fit the data when it hasn't been given sufficient training data. \cite{Verspoor}, This is likely what is occurring here.
+
+Naive Bayes provides a good baseline classification as it is easy to explain.
+
+% • If you engineered new features, why did you use them? What aspect of the data set are they attempting to model?
+No new features were used / generated for this classification.
+
+% • What evaluation strategy did you use? Based on this evaluation, does your model seem to be a good one?
+Once the model had been learned it was then tested with unseen test data, below is how it performed:
 \subsubsection{Result}
 
 \begin{table}[H]
 \centering
-\caption{Performance}
+\caption{Naive Bayes}
 \label{my-label}
-  \begin{tabular}{lll}
+  \begin{tabular}{rrr}
     Correctly Classified Instances & 45205 & 21.0373 \% \\
     Incorrectly Classified Instances & 169675 & 78.9627 \% \\
   \end{tabular}
 \end{table}
-
-\subsubsection{Analysis}
-% • Does your classifier do a good job at addressing the task? Why or why not?
-Despite my hunch that the Naive Bayes classification would struggle. These results align with previous research has been shown that Naive Bayes classifiers have been shown to work for both independent features and dependent feature's \cite{rish2001empirical}.
-% • Why is the method(s) you explored a reasonable strategy for approaching the task? What advantages? does it have over other possible methods?
-Th
-% • If you engineered new features, why did you use them? What aspect of the data set are they attempting to model?
-The new features
-% • What evaluation strategy did you use? Based on this evaluation, does your model seem to be a good one?
+\begin{table}[H]
+\centering
+\caption{Naive Bayes: Accuracy By Class}
+\label{my-label}
+  \begin{tabular}{cccccccccc}
+&\textbf{TP Rate}&\textbf{FP Rate}&\textbf{Precision}&\textbf{Recall}&\textbf{F Measure}&\textbf{MCC}&\textbf{ROC Area}&\textbf{PRC Area}&\textbf{Class}\\
+&1.000&1.000&0.210&1.000&0.348&0.000&0.501&0.211&B\\
+&0..000&0.000&0.000&0.000&0.000&0.000&0.488&0.162&H\\
+&0.000&0.000&0.000&0.000&0.000&0.000&0.487&0.252&SD\\
+&0.000&0.000&0.000&0.000&0.000&0.000&0.525&0.204&Se\\
+&0.000&0.000&0.000&0.000&0.000&0.000&0.501&0.172&W\\
+\textbf{Weighted Avg.}&0.210&0.210&0.044&0.210&0.073&0.000&0.500&0.205&\\
+  \end{tabular}
+\end{table}
+From this it can be seen that this model of classification only had any success with identifying class \texttt{B} (Boston),
 % • Be sure to support your statements and analysis with examples
 
-\subsection{subsection}
+\subsection{J48 also known as C4.5}
+J48 an open source Java implementation of C4.5 is a decision tree classifier. It rated first in \textit{Top 10 Algorithms in Data Mining} \cite{wu2008top}. A survey paper by the \textit{International Conference on Data Mining} (ICDM).
+
+When I originally generated the tree I left the ID attribute in, as such the decisions of the tree were almost entirely based of the ID attribute. I've decided to keep these results in as they provide a good baseline of the worst case scenario.
+
+I found the output tree generated really interesting. See the Appendix Section 4.1 for the outputted tree (when generated without an ID field). In an attempt to be creative I tried removing attributes that I personally assumed would not produce different trees, URLs this however drastically changes the tree. An example of this was generating a tree without the URL attributes, this generated tree can also be seen in the Appendix (Section 4.2).
 % • Does your classifier do a good job at addressing the task? Why or why not?
+
+Comparatively,  this model does a significantly better job at classifying the tweets then the Naive Bayes approach. It's interesting to note which classifiers do the best job of identifying a city. For example, tweets with "\textit{Diego}" in them always were always referring to "\textit{San Diego}" (\texttt{SD}).
 % • Why is the method(s) you explored a reasonable strategy for approaching the task? What advantages? does it have over other possible methods?
+The tree based approach works well when the training data has an accurate representation of the whole data set, this is even the case with small training datasets. Which is what we have here.
 % • If you engineered new features, why did you use them? What aspect of the data set are they attempting to model?
+
+It is interesting how different the generated tree is when you remove limited attributes. Limited research has been done in this area. \cite{wu2008top} See appendix to see how the two trees differ.
+
+It has been determined if you can achieve a \textit{stable} tree, one where the tree doesn't change regardless of which attribute you remove. The error results is greatly reduced. \cite{wu2008top}. For example Houston (\texttt{H}) doesn't change when you remove the URL attributes, (see trees in appendix), this can also be seen with the same evaluation results between the two. (See Table 6 \& 7) Despite more fiddling with attributes I wasn't able to achieve this.
 % • What evaluation strategy did you use? Based on this evaluation, does your model seem to be a good one?
+
+
+\begin{table}[H]
+\centering
+\caption{C4.5 with ID Field}
+\label{my-label}
+  \begin{tabular}{rrr}
+    Correctly Classified Instances & 19850 &28.9646\% \\
+    Incorrectly Classified Instances & 48682 & 71.0354 \% \\
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{C4.5 without ID Field}
+\label{my-label}
+  \begin{tabular}{rrr}
+    Correctly Classified Instances & 20997 &30.6382 \% \\
+    Incorrectly Classified Instances & 47535 &69.3618 \% \\
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{C4.5 without ID Field without urls (and without ID)}
+\label{my-label}
+  \begin{tabular}{rrr}
+    Correctly Classified Instances & 21019 &30.6703\% \\
+    Incorrectly Classified Instances & 47513 &69.3297 \% \\
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{C4.5: Accuracy By Class without ID field}
+\label{my-label}
+  \begin{tabular}{cccccccccc}
+&\textbf{TP Rate}&\textbf{FP Rate}&\textbf{Precision}&\textbf{Recall}&\textbf{F Measure}&\textbf{MCC}&\textbf{ROC Area}&\textbf{PRC Area}&\textbf{Class}\\
+&0.064&0.004&0.761&0.064&0.119&0.189&0.560&0.221&B\\
+&0.083&0.016&0.537&0.083&0.143&0.156&0.565&0.238&H\\
+&0.967&0.903&0.275&0.967&0.428&0.105&0.564&0.324&SD\\
+&0.054&0.001&0.908&0.054&0.102&0.193&0.560&0.267&Se\\
+&0.092&0.011&0.625&0.092&0.160&0.194&0.564&0.237&W\\
+Weighted Avg.&0.306&0.242&0.601&0.306&0.208&0.162&0.562&0.263\\
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{C4.5: Accuracy By Class without URLs (and without ID)}
+\label{my-label}
+  \begin{tabular}{cccccccccc}
+&\textbf{TP Rate}&\textbf{FP Rate}&\textbf{Precision}&\textbf{Recall}&\textbf{F Measure}&\textbf{MCC}&\textbf{ROC Area}&\textbf{PRC Area}&\textbf{Class}\\
+&0.059&0.002&0.857&0.059&0.110&0.198&0.559&0.228&B\\
+&0.083&0.016&0.537&0.083&0.143&0.156&0.565&0.238&H\\
+&0.972&0.905&0.276&0.972&0.430&0.111&0.565&0.324&SD\\
+&0.054&0.001&0.908&0.054&0.102&0.193&0.558&0.266&Se\\
+&0.092&0.011&0.625&0.092&0.160&0.194&0.562&0.237&W\\
+Weighted Avg.&0.307&0.242&0.618&0.307&0.206&0.166&0.562&0.265\\
+  \end{tabular}
+\end{table}
 % • Be sure to support your statements and analysis with examples
 
-\subsection{subsection}
-% • Does your classifier do a good job at addressing the task? Why or why not?
-% • Why is the method(s) you explored a reasonable strategy for approaching the task? What advantages? does it have over other possible methods?
-% • If you engineered new features, why did you use them? What aspect of the data set are they attempting to model?
-% • What evaluation strategy did you use? Based on this evaluation, does your model seem to be a good one?
-% • Be sure to support your statements and analysis with examples
+\texcount
+\begin{landscape}
+\section{Appendix}
+\subsection{Tree generated by C4.5 without ID field}
+\begin{verbatim}
+seattle <= 0
+|   houston <= 0
+|   |   diego <= 0
+|   |   |   jupdicom <= 0
+|   |   |   |   httpbitlycdqk <= 0
+|   |   |   |   |   boston <= 0
+|   |   |   |   |   |   httpbitlyczmk <= 0
+|   |   |   |   |   |   |   cheezburger <= 0
+|   |   |   |   |   |   |   |   scans <= 0
+|   |   |   |   |   |   |   |   |   bellevue <= 0
+|   |   |   |   |   |   |   |   |   |   redsox <= 0
+|   |   |   |   |   |   |   |   |   |   |   sdut <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   chargers <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   dc <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   uw <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   sd <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   seahawks <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   sandiego <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   sox <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   wa <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   patriots <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ma <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   tcot <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   texas <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ebay <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   bill <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   washington <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   tx <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   obama <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   health <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   lol <= 0: SD (193299.0/143910.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   lol > 0: H (4290.0/2994.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   health > 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   care <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   health <= 1: W (779.0/568.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   health > 1: H (49.0/34.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   care > 0: W (464.0/173.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   obama > 0: W (1031.0/503.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   tx > 0: H (124.0/57.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   washington > 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   obama <= 0: W (419.0/212.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   obama > 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   health <= 0: B (18.0/11.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   health > 0: W (3.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   bill > 0: W (708.0/312.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ebay > 0: Se (293.0/99.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   texas > 0: H (345.0/128.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   tcot > 0: W (531.0/214.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ma > 0: B (290.0/82.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   patriots > 0: B (216.0/46.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   wa > 0: Se (184.0/42.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   sox > 0: B (245.0/31.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   sandiego > 0: SD (197.0/5.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   seahawks > 0: Se (83.0/4.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   sd > 0: SD (525.0/24.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   uw > 0: Se (131.0/6.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   dc > 0: W (1057.0/155.0)
+|   |   |   |   |   |   |   |   |   |   |   |   chargers > 0: SD (568.0/18.0)
+|   |   |   |   |   |   |   |   |   |   |   sdut > 0: SD (377.0)
+|   |   |   |   |   |   |   |   |   |   redsox > 0: B (252.0/3.0)
+|   |   |   |   |   |   |   |   |   bellevue > 0: Se (112.0)
+|   |   |   |   |   |   |   |   scans > 0: H (151.0/5.0)
+|   |   |   |   |   |   |   cheezburger > 0: Se (186.0/2.0)
+|   |   |   |   |   |   httpbitlyczmk > 0: B (252.0)
+|   |   |   |   |   boston > 0: B (1653.0/120.0)
+|   |   |   |   httpbitlycdqk > 0: H (165.0)
+|   |   |   jupdicom > 0: H (219.0)
+|   |   diego > 0: SD (2451.0/58.0)
+|   houston > 0: H (1301.0/104.0)
+seattle > 0: Se (1912.0/102.0)
+\end{verbatim}
+\clearpage
+\subsection{Tree generated by C4.5 without ID field (and without URL attributes)}
+\begin{verbatim}
+seattle <= 0
+|   houston <= 0
+|   |   diego <= 0
+|   |   |   boston <= 0
+|   |   |   |   cheezburger <= 0
+|   |   |   |   |   scans <= 0
+|   |   |   |   |   |   bellevue <= 0
+|   |   |   |   |   |   |   redsox <= 0
+|   |   |   |   |   |   |   |   sdut <= 0
+|   |   |   |   |   |   |   |   |   chargers <= 0
+|   |   |   |   |   |   |   |   |   |   dc <= 0
+|   |   |   |   |   |   |   |   |   |   |   uw <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   seahawks <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   sd <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   sandiego <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   sox <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   wa <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   patriots <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ma <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   tcot <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   texas <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ebay <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   bill <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   washington <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   tx <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   obama <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   health <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   lol <= 0: SD (193929.0/144540.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   lol > 0: H (4290.0/2994.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   health > 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   care <= 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   health <= 1: W (781.0/570.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   health > 1: H (49.0/34.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   care > 0: W (464.0/173.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   obama > 0: W (1031.0/503.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   tx > 0: H (124.0/57.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   washington > 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   obama <= 0: W (419.0/212.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   obama > 0
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   health <= 0: B (18.0/11.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   health > 0: W (3.0/1.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   bill > 0: W (708.0/312.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ebay > 0: Se (295.0/101.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   texas > 0: H (346.0/128.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   tcot > 0: W (531.0/214.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ma > 0: B (290.0/82.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   patriots > 0: B (216.0/46.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   wa > 0: Se (185.0/43.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   sox > 0: B (245.0/31.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   sandiego > 0: SD (197.0/5.0)
+|   |   |   |   |   |   |   |   |   |   |   |   |   sd > 0: SD (525.0/24.0)
+|   |   |   |   |   |   |   |   |   |   |   |   seahawks > 0: Se (83.0/4.0)
+|   |   |   |   |   |   |   |   |   |   |   uw > 0: Se (131.0/6.0)
+|   |   |   |   |   |   |   |   |   |   dc > 0: W (1057.0/155.0)
+|   |   |   |   |   |   |   |   |   chargers > 0: SD (568.0/18.0)
+|   |   |   |   |   |   |   |   sdut > 0: SD (377.0)
+|   |   |   |   |   |   |   redsox > 0: B (252.0/3.0)
+|   |   |   |   |   |   bellevue > 0: Se (112.0)
+|   |   |   |   |   scans > 0: H (151.0/5.0)
+|   |   |   |   cheezburger > 0: Se (186.0/2.0)
+|   |   |   boston > 0: B (1653.0/120.0)
+|   |   diego > 0: SD (2451.0/58.0)
+|   houston > 0: H (1301.0/104.0)
+seattle > 0: Se (1912.0/102.0)
 
+\end{verbatim}
+\end{landscape}
 
 \bibliographystyle{plainnat}
 \bibliography{bibliography.bib}
